@@ -1673,6 +1673,10 @@ static void scratchpad_hide ()
 {
 	if (selmon -> sel)
 	{
+    Client * c = selmon->sel;
+    int new_w = c->mon->mw / 2; int new_h = c->mon->mh / 2;
+    int new_x = c->mon->mx + (c->mon->mw - new_w) / 2; int new_y = c->mon->my + (c->mon->mh - new_h) / 2;
+    resizeclient(c, new_x, new_y, new_w, new_h);
 		selmon -> sel -> tags = SCRATCHPAD_MASK;
 		selmon -> sel -> isfloating = 1;
 		focus(NULL);
@@ -2098,6 +2102,7 @@ togglefloating(const Arg *arg)
 		return;
 	if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
 		return;
+  scratchpad_remove();
 	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
 	if (selmon->sel->isfloating)
 		resize(selmon->sel, selmon->sel->x, selmon->sel->y,
